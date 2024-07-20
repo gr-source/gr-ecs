@@ -1,0 +1,10 @@
+# ninja log v5
+1	708	1721450698320685959	CMakeFiles/gr-script.dir/main.cpp.o	4cc201c471887716
+708	793	1721450698404688340	../bin/gr-script	45d75239e77b3311
+0	537	1721449958815106575	CMakeFiles/gr-script.dir/ecs/entity.cpp.o	2d48318e5be62fc
+0	461	1721450617898373442	CMakeFiles/gr-script.dir/component/transform.cpp.o	caa16c338bef418c
+0	3	0	clean	a31eedcededa8236
+1	460	1721450834660465900	CMakeFiles/gr-script.dir/component/transform.cpp.o	7b46c16ceac4afd5
+1	738	1721450834940473506	CMakeFiles/gr-script.dir/ecs/entity.cpp.o	2d2c9ecd046760d
+1	962	1721450835160479481	CMakeFiles/gr-script.dir/main.cpp.o	7486ba03e48d7c5e
+962	1069	1721450835268482415	../bin/gr-script	45d75239e77b3311
