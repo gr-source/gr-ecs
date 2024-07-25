@@ -14,30 +14,36 @@ int main() {
     std::cout << "Entity: 0" << std::endl;
     auto& entity0 = Entity::Create();
 
-    auto& t = entity0.addComponent<Transform>();
-
-    t.id = 90;
-    entity0.addComponent<Render>();
-    entity0.addComponent<Math>();
-    auto& transform = *static_cast<Transform*>(entity0.addComponent("Transform"));
+    auto& transform = *static_cast<Transform*>(entity0.addComponent("9Transform"));
+    std::cout << "Original: " << transform.id << std::endl;
+    transform.id = 10;
+    std::cout << "Modify: " << transform.id << std::endl;
 
     if (entity0.hasComponent<Transform>()) {
-        auto& tg = entity0.getComponent<Transform>();
-        std::cout << "Component exists: " << tg.id << std::endl;
+        std::cout << "Has transform componenet, using template." << std::endl;
 
-        tg.id = 70;
+        auto& tt = entity0.getComponent<Transform>();
+
+        std::cout << "Last: " << tt.id << std::endl;
+        tt.id = 800;
+        std::cout << "Befor: " << tt.id << std::endl;
     } else {
-        std::cout << "Component do not exists." << std::endl;
+        std::cout << "Component transform do not exists, using template." << std::endl;
     }
 
-    std::cout << "V: " << t.id << std::endl;
-    // std::cout << "Entity: 1" << std::endl;
-    // auto& entity1 = Entity::Create();
-    // entity1.addComponent<Transform>();
-    // entity1.addComponent<Render>();
-    // entity1.addComponent<Math>();
+    if (entity0.hasComponent("9Transform")) {
+        std::cout << "Has transform componenet, using string." << std::endl;
 
-    std::cout << "Finish." << std::endl;
+        auto& ts = *static_cast<Transform*>(entity0.getComponent("9Transform"));
+
+        std::cout << "Last: " << ts.id << std::endl;
+        ts.id = 40;
+        std::cout << "Befor: " << ts.id << std::endl;
+    } else {
+        std::cout << "Component transform do not exists, using string." << std::endl;
+    }
+
+    std::cout << "Finished: " << transform.id << std::endl;
 
     return 0;
 }

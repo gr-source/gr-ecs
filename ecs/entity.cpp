@@ -10,11 +10,23 @@ Entity &Entity::Create() {
 
 Component *Entity::addComponent(const std::string &name) {
     auto it = s_registersComponenet.find(name);
-    if (it != s_registersComponenet.end()) {
+    if (it == s_registersComponenet.end()) {
+        return nullptr;
     }
-    return nullptr;
+    components.emplace(name, (*it).second);
+
+    auto& component = components[name];
+    component->entity = this;
+    component->Init();
+
+    return dynamic_cast<Component*>(component.get());
 }
 
 Component *Entity::getComponent(const std::string &name) {
-    return nullptr;
+    return components[name].get();
+}
+
+const bool Entity::hasComponent(const std::string &name) {
+    auto it = components.find(name);
+    return it != components.end();
 }

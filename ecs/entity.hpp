@@ -44,8 +44,10 @@ public:
 
     Component *getComponent(const std::string &name);
 
+    const bool hasComponent(const std::string &name);
+
 private:
-    std::unordered_map<std::string, std::unique_ptr<Component>> components;
+    std::unordered_map<std::string, std::shared_ptr<Component>> components;
 
     std::bitset<MAX_COMPONENT> sequence;
 
@@ -56,11 +58,12 @@ private:
 
 template <typename T, typename... Args>
 inline T &Entity::addComponent(Args &&...args) {
-    // auto id = ComponentIDGenerator::GenerateIDByType<T>();
+    if (hasComponent<T>()) {
+        return getComponent<T>();
+    }
     auto name = typeid(T).name();
 
-    components.emplace(name, std::make_unique<T>(std::forward<Args>(args)...));
-    // sequence.set(name, true);
+    components.emplace(name, std::make_shared<T>(std::forward<Args>(args)...));
 
     auto& component = components[name];
     component->entity = this;

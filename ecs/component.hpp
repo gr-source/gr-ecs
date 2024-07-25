@@ -19,13 +19,13 @@ public:
     Entity* entity;
 };
 
-inline std::unordered_map<std::string, std::unique_ptr<Component>> s_registersComponenet;
+inline std::unordered_map<std::string, std::shared_ptr<Component>> s_registersComponenet;
 
 #define REGISTER_COMPONENT(cls) \
     namespace { \
         struct Register_##cls { \
             Register_##cls() { \
-                s_registersComponenet.emplace(#cls, std::make_unique<cls>()); \
+                s_registersComponenet.emplace(typeid(cls).name(), std::make_shared<cls>()); \
             } \
         } register_##cls; \
     } // namespace 
