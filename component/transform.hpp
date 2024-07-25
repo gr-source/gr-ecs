@@ -16,3 +16,6 @@ public:
     int id;
 };
 
+REGISTER_COMPONENT(Transform)
+
+

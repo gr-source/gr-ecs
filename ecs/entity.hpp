@@ -14,7 +14,6 @@ using ComponentID = std::size_t;
 
 class ComponentIDGenerator {
 public:
-    // Função template para gerar ID único por tipo de componente
     template <typename T>
     static ComponentID GenerateIDByType() noexcept {
         static ComponentID id = GenerateID();
@@ -22,7 +21,6 @@ public:
     }
 
 private:
-    // Função estática para gerar ID único globalmente
     static ComponentID GenerateID() noexcept {
         static ComponentID id = 0;
         return id++;
@@ -42,21 +40,29 @@ public:
     template <typename T>
     const bool hasComponent();
 
-private:
-    static std::vector<std::unique_ptr<Entity>> s_entities;
+    Component *addComponent(const std::string &name);
 
-    std::unordered_map<ComponentID, std::unique_ptr<Component>> components;
+    Component *getComponent(const std::string &name);
+
+private:
+    std::unordered_map<std::string, std::unique_ptr<Component>> components;
+
     std::bitset<MAX_COMPONENT> sequence;
+
+    static std::vector<std::unique_ptr<Entity>> s_entities;
 };
+
+#include <iostream>
 
 template <typename T, typename... Args>
 inline T &Entity::addComponent(Args &&...args) {
-    auto id = ComponentIDGenerator::GenerateIDByType<T>();
+    // auto id = ComponentIDGenerator::GenerateIDByType<T>();
+    auto name = typeid(T).name();
 
-    components.emplace(id, std::make_unique<T>(std::forward<Args>(args)...));
-    sequence.set(id, true);
+    components.emplace(name, std::make_unique<T>(std::forward<Args>(args)...));
+    // sequence.set(name, true);
 
-    auto& component = components[id];
+    auto& component = components[name];
     component->entity = this;
     component->Init();
 
@@ -65,10 +71,14 @@ inline T &Entity::addComponent(Args &&...args) {
 
 template <typename T>
 inline T &Entity::getComponent() {
-    return *dynamic_cast<T*>(components[ComponentIDGenerator::GenerateIDByType<T>()].get());
+    return *dynamic_cast<T*>(components[typeid(T).name()].get());
 }
 
 template <typename T>
 inline const bool Entity::hasComponent() {
-    return sequence.test(ComponentIDGenerator::GenerateIDByType<T>());
+    auto it = components.find(typeid(T).name());
+    if (it != components.end()) {
+        return true;
+    }
+    return false;
 }
