@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-project(gr-script VERSION 0.1.0 LANGUAGES C CXX)
+project(gr-ecs VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
@@ -11,5 +11,5 @@ set(component_src
     component/transform.cpp
 )
 
-add_executable(gr-script main.cpp ${component_src} ecs/entity.cpp)
+add_executable(${PROJECT_NAME} main.cpp ${component_src} ecs/entity.cpp)
 
